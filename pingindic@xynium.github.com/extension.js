@@ -168,7 +168,7 @@ function init() {
 function enable() {
     settings = ExtensionUtils.getSettings('org.gnome.shell.extensions.pingindic');  
     mpingindic = new Extension();
-    Main.panel.addToStatusArea('mpingindic', mpingindic, 0, 'right');
+    Main.panel.addToStatusArea('mpingindic', mpingindic, 9, 'left');
     timeout=GLib.timeout_add(GLib.PRIORITY_DEFAULT_IDLE,settings.get_int(UPDTEDLY)*1000, update );
 }
 
