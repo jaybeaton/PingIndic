@@ -120,12 +120,12 @@ class Extension extends PanelMenu.Button{
             const result =  out[1].split('=');
             if(result[3] != null) {
                 const val=result[3].split('\n');
-                label.set_text(val[0]);
+                label.set_text('⬤ ' + val[0]);
                 setlabelstyle(val[0]); 
             }
         }
         else {
-           label.set_text(_("Error time"));
+           label.set_text(_("❌ Error time"));
            label.set_style_class_name('pingindic-label-bad' );
         }
         GLib.source_remove(tagWatchOUT);
@@ -135,7 +135,7 @@ class Extension extends PanelMenu.Button{
 
     loadPipeERR(channel, condition, data) {
         if (condition != GLib.IOCondition.HUP) {
-            label.set_text(_("Error acces"));
+            label.set_text(_("❌ Error access"));
             label.set_style_class_name('pingindic-label-bad' );
         }
         GLib.source_remove(tagWatchERR);
