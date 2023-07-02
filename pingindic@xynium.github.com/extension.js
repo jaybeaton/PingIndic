@@ -157,13 +157,13 @@ class Extension extends PanelMenu.Button{
 });
 
 function setlabelstyle(time){
-    if (time > settings.get_int(LIMIT4)) {
+    if (time >= settings.get_int(LIMIT4)) {
         label.set_style_class_name('pingindic-label-error');
-    } else if (time > settings.get_int(LIMIT3)) {
+    } else if (time >= settings.get_int(LIMIT3)) {
         label.set_style_class_name('pingindic-label-level-4');
-    } else if (time > settings.get_int(LIMIT2)) {
+    } else if (time >= settings.get_int(LIMIT2)) {
         label.set_style_class_name('pingindic-label-level-3');
-    } else if (time > settings.get_int(LIMIT1)) {
+    } else if (time >= settings.get_int(LIMIT1)) {
         label.set_style_class_name('pingindic-label-level-2');
     } else {
         label.set_style_class_name('pingindic-label-level-1');
