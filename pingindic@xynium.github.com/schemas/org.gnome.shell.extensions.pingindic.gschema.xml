@@ -4,20 +4,28 @@
         <key type="i" name="update-interval">
             <default>15</default>
             <summary>Delay(sec)</summary>
-            <description>Delay between ping .</description>
+            <description>Delay between pings.</description>
         </key>
-        <key type="s" name="adress">
+        <key type="s" name="address">
             <default>'8.8.8.8'</default>
-            <summary>Adress to Ping</summary>
-            <description>Adress to ping.</description>
+            <summary>Address to Ping</summary>
+            <description>Address to ping.</description>
         </key>
-        <key type="i" name="limitforgood">
-            <default>75</default>
-            <summary>Limit for good ping(ms)</summary>
+        <key type="i" name="limit-1">
+            <default>30</default>
+            <summary>Limit for fast ping (ms)</summary>
         </key>
-        <key type="i" name="limitforbad">
-            <default>150</default>
-            <summary>Limit for bad ping(ms)</summary>
+        <key type="i" name="limit-2">
+            <default>60</default>
+            <summary>Limit for medium ping (ms)</summary>
+        </key>
+        <key type="i" name="limit-3">
+            <default>120</default>
+            <summary>Limit for slow ping (ms)</summary>
+        </key>
+        <key type="i" name="limit-4">
+            <default>1000</default>
+            <summary>Limit for very slow ping (ms)</summary>
         </key>
     </schema>
 </schemalist>

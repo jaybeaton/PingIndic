@@ -19,14 +19,16 @@ const Gettext = imports.gettext.domain('PingIndic');
 const _ = Gettext.gettext;
 
 const UPDTEDLY="update-interval";
-const ADRESS='adress';
-const LIMITFORGOOD = "limitforgood";
-const LIMITFORBAD="limitforbad";
+const ADDRESS='address';
+const LIMIT1 = "limit-1";
+const LIMIT2 = "limit-2";
+const LIMIT3 = "limit-3";
+const LIMIT4 = "limit-4";
 
 let mpingindic;
 let settings;
 let feedsArray;
-let label; 
+let label;
 let tagWatchOUT ;
 let tagWatchERR;
 let timeout;
@@ -68,16 +70,16 @@ class Extension extends PanelMenu.Button{
         let prefsButton = new St.Button();
         prefsButton.child = new St.Icon({
             icon_name: 'emblem-system' ,
-            style_class: 'pingindic-button-action' 
+            style_class: 'pingindic-button-action'
         });
         let preflabBtn = new St.Button({style_class: 'pingindic-Btn-label',y_align: Clutter.ActorAlign.CENTER,label: _('Settings')});
         prefsButton.connect('clicked', () => {
             this.menu.actor.hide();
-            ExtensionUtils.openPrefs(); 
+            ExtensionUtils.openPrefs();
         });
         preflabBtn.connect('clicked', () => {
             this.menu.actor.hide();
-            ExtensionUtils.openPrefs(); 
+            ExtensionUtils.openPrefs();
         });
         customButtonBox.add_actor(prefsButton);
         customButtonBox.add_actor(preflabBtn);
@@ -85,21 +87,21 @@ class Extension extends PanelMenu.Button{
         this.mainBox.add_actor(customButtonBox);
         this.menu.box.add(this.mainBox);
     }
-    
+
     loadData() {
         let success;
-        this.command = ["ping","-c 1",settings.get_string(ADRESS)];
+        this.command = ["ping","-c 1",settings.get_string(ADDRESS)];
         [success, this.child_pid, this.std_in, this.std_out, this.std_err] = GLib.spawn_async_with_pipes(
-            null, 
-            this.command, 
             null,
-            GLib.SpawnFlags.SEARCH_PATH, 
+            this.command,
+            null,
+            GLib.SpawnFlags.SEARCH_PATH,
             null);
 
         GLib.close(this.std_in);
-        
+
         if (!success) {
-            label.set_text(_("Ping Fail"));  //xxx for debug
+            label.set_text(_("Ping Failed"));
             return;
         }
 
@@ -108,25 +110,35 @@ class Extension extends PanelMenu.Button{
 
         tagWatchOUT = GLib.io_add_watch(this.IOchannelOUT, GLib.PRIORITY_DEFAULT,
             GLib.IOCondition.IN | GLib.IOCondition.HUP, this.loadPipeOUT );
-       
+
         tagWatchERR = GLib.io_add_watch(this.IOchannelERR, GLib.PRIORITY_DEFAULT,
             GLib.IOCondition.IN | GLib.IOCondition.HUP,this.loadPipeERR );
     }
-    
+
      loadPipeOUT(channel, condition, data) {
-        if (condition != GLib.IOCondition.HUP) {
+        if (condition !== GLib.IOCondition.HUP) {
             let out = channel.read_line(); //dummy
-             out = channel.read_line();
+            out = channel.read_line();
             const result =  out[1].split('=');
             if(result[3] != null) {
-                const val=result[3].split('\n');
-                label.set_text('⬤ ' + val[0]);
-                setlabelstyle(val[0]); 
+                const val = result[3].split('\n');
+                let time = parseFloat(val);
+                let timeText = '';
+                setlabelstyle(time);
+                if (time > 1000) {
+                    time = Math.round(time / 100) / 10;
+                    timeText = time + 's';
+                }
+                else {
+                    time = Math.round(time);
+                    timeText = time + 'ms';
+                }
+                label.set_text('⬤ ' + timeText);
             }
         }
         else {
            label.set_text(_("❌ Error time"));
-           label.set_style_class_name('pingindic-label-bad' );
+           label.set_style_class_name('pingindic-label-error');
         }
         GLib.source_remove(tagWatchOUT);
         channel.shutdown(true);
@@ -136,7 +148,7 @@ class Extension extends PanelMenu.Button{
     loadPipeERR(channel, condition, data) {
         if (condition != GLib.IOCondition.HUP) {
             label.set_text(_("❌ Error access"));
-            label.set_style_class_name('pingindic-label-bad' );
+            label.set_style_class_name('pingindic-label-bad');
         }
         GLib.source_remove(tagWatchERR);
         channel.shutdown(false);
@@ -144,29 +156,30 @@ class Extension extends PanelMenu.Button{
     }
 });
 
-function setlabelstyle(str){
-    let time = parseFloat(str);
-    if (time<settings.get_int(LIMITFORGOOD))
-        label.set_style_class_name('pingindic-label-good' );
-    else {
-        if (time<settings.get_int(LIMITFORBAD))
-            label.set_style_class_name('pingindic-label-nogood' );
-        else
-            label.set_style_class_name('pingindic-label-bad' );
-            // label.set_style('color : #00FF00' );
+function setlabelstyle(time){
+    if (time > settings.get_int(LIMIT4)) {
+        label.set_style_class_name('pingindic-label-error');
+    } else if (time > settings.get_int(LIMIT3)) {
+        label.set_style_class_name('pingindic-label-level-4');
+    } else if (time > settings.get_int(LIMIT2)) {
+        label.set_style_class_name('pingindic-label-level-3');
+    } else if (time > settings.get_int(LIMIT1)) {
+        label.set_style_class_name('pingindic-label-level-2');
+    } else {
+        label.set_style_class_name('pingindic-label-level-1');
     }
 }
 
 function update() {
     mpingindic.loadData();
-    return GLib.SOURCE_CONTINUE;;
+    return GLib.SOURCE_CONTINUE;
 }
 
 function init() {
 }
 
 function enable() {
-    settings = ExtensionUtils.getSettings('org.gnome.shell.extensions.pingindic');  
+    settings = ExtensionUtils.getSettings('org.gnome.shell.extensions.pingindic');
     mpingindic = new Extension();
     Main.panel.addToStatusArea('mpingindic', mpingindic, 9, 'left');
     timeout=GLib.timeout_add(GLib.PRIORITY_DEFAULT_IDLE,settings.get_int(UPDTEDLY)*1000, update );
