@@ -137,7 +137,7 @@ class Extension extends PanelMenu.Button{
             }
         }
         else {
-           label.set_text(_("❌ Error time"));
+           label.set_text(_("❌"));
            label.set_style_class_name('pingindic-label-error');
         }
         GLib.source_remove(tagWatchOUT);
@@ -147,8 +147,8 @@ class Extension extends PanelMenu.Button{
 
     loadPipeERR(channel, condition, data) {
         if (condition != GLib.IOCondition.HUP) {
-            label.set_text(_("❌ Error access"));
-            label.set_style_class_name('pingindic-label-bad');
+            label.set_text(_("❌"));
+            label.set_style_class_name('pingindic-label-error');
         }
         GLib.source_remove(tagWatchERR);
         channel.shutdown(false);
