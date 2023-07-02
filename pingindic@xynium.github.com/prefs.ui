@@ -65,7 +65,7 @@
             <child>
               <object class="GtkLabel">
                 <property name="visible">True</property>
-                <property name="label" translatable="yes">Address to ping: </property>
+                <property name="label" translatable="yes">IP address to ping: </property>
               </object>
             </child>
             <child>
@@ -162,7 +162,7 @@
             <child type="label">
               <object class="GtkLabel">
                 <property name="visible">True</property>
-                <property name="label" translatable="yes">Aspect: </property>
+                <property name="label" translatable="yes">Ping time thresholds (will determine color)</property>
               </object>
             </child>
           </object>
