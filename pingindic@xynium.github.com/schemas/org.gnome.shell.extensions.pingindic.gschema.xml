@@ -3,13 +3,12 @@
     <schema path="/org/gnome/shell/extensions/pingindic/" id="org.gnome.shell.extensions.pingindic">
         <key type="i" name="update-interval">
             <default>15</default>
-            <summary>Delay(sec)</summary>
+            <summary>Delay (sec)</summary>
             <description>Delay between pings.</description>
         </key>
         <key type="s" name="address">
             <default>'8.8.8.8'</default>
-            <summary>Address to Ping</summary>
-            <description>Address to ping.</description>
+            <summary>IP address to ping</summary>
         </key>
         <key type="i" name="limit-1">
             <default>30</default>

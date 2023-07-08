@@ -5,7 +5,6 @@
 'use strict';
 
 const Main = imports.ui.main;
-//const Mainloop = imports.mainloop;
 const Me = imports.misc.extensionUtils.getCurrentExtension();
 const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
@@ -38,7 +37,6 @@ class Extension extends PanelMenu.Button{
      _init () {
         super._init(0);
 
-       // Label  voir les style at https://docs.gtk.org/Pango/pango_markup.html
         label = new St.Label({style_class: 'pingindic-label',y_align: Clutter.ActorAlign.CENTER,text: _("¡HOLA!")});
         let topBox = new St.BoxLayout();
         topBox.add_actor(label);
@@ -53,7 +51,6 @@ class Extension extends PanelMenu.Button{
 
         // Create main box
         this.mainBox = new St.BoxLayout();
-        //this.mainBox.set_vertical(true);
 
         let customButtonBox = new St.BoxLayout({
             style_class: 'pingindic-button-box ',
@@ -66,13 +63,13 @@ class Extension extends PanelMenu.Button{
             pack_start: false
         });
 
-        // custom round preferences button
+        // Custom round preferences button.
         let prefsButton = new St.Button();
         prefsButton.child = new St.Icon({
             icon_name: 'emblem-system' ,
             style_class: 'pingindic-button-action'
         });
-        let preflabBtn = new St.Button({style_class: 'pingindic-Btn-label',y_align: Clutter.ActorAlign.CENTER,label: _('Settings')});
+        let preflabBtn = new St.Button({style_class: 'pingindic-button-label',y_align: Clutter.ActorAlign.CENTER,label: _('Settings')});
         prefsButton.connect('clicked', () => {
             this.menu.actor.hide();
             ExtensionUtils.openPrefs();

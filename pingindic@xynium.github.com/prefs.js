@@ -2,6 +2,7 @@
  * PingIndic by Xynium September 2022
  */
 'use strict';
+
 const {  Gio, Gtk ,GObject} = imports.gi;
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
