@@ -37,7 +37,7 @@ class Extension extends PanelMenu.Button{
      _init () {
         super._init(0);
 
-        label = new St.Label({style_class: 'pingindic-label',y_align: Clutter.ActorAlign.CENTER,text: _("¡HOLA!")});
+        label = new St.Label({style_class: 'pingindic-label',y_align: Clutter.ActorAlign.CENTER,text: _("…")});
         let topBox = new St.BoxLayout();
         topBox.add_actor(label);
 
